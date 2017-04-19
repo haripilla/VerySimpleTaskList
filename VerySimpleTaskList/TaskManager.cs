@@ -109,8 +109,27 @@ namespace VerySimpleTaskList
             Console.WriteLine("What is your next task?");
 
             string description = GetStringFromUser();
-            Task newTask = new Task(description);
-            _tasks.Add(newTask);
+
+
+
+            Console.WriteLine("Do you want to add a Reminder to Task ?");
+            string Choice = GetStringFromUser();
+
+            if (Choice == "yes")
+            {
+                Console.WriteLine("How Many Hours you want to set the Reminder for this Task ?");
+                //int noOfHours = GetNumberFromUser();
+
+                int noOfHours = GetValidHoursFromUser();
+                Task newTask = new TaskWithReminder(description, noOfHours);
+                _tasks.Add(newTask);
+            }
+            else
+            {
+                Task newTask = new Task(description);
+                _tasks.Add(newTask);
+            }
+
         }
 
 
@@ -133,7 +152,23 @@ namespace VerySimpleTaskList
 
         private string GetStringFromUser()
         {
-            return Console.ReadLine();
+            //return Console.ReadLine();
+
+            string descp = Console.ReadLine();
+            while (true)
+            {
+                if (string.IsNullOrEmpty(descp))
+                {
+                    Console.WriteLine("Invalid Entery - Enter correct Value ");
+                    descp = GetStringFromUser();
+                    
+                }
+                else
+                {
+                    return descp;
+                }
+            }
+
         }
 
         private int GetNumberFromUser()
@@ -158,6 +193,25 @@ namespace VerySimpleTaskList
                 }
             }
             
+        }
+
+
+        private int GetValidHoursFromUser()
+        {
+            int numT = GetNumberFromUser();
+            while (true)
+            {
+                if (numT >= 1 && numT < 24)
+                {
+                    return numT;
+                }
+                else
+                {
+                    Console.WriteLine("Enter Valid Reminder - Hours between 1 to 24");
+                    numT = GetNumberFromUser();
+                }
+            }
+
         }
 
         private int GetValidMenuFromUser(int index)
